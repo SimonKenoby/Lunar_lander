@@ -27,11 +27,28 @@ def weights_init(m):
 
 class AC_netwok(torch.nn.Module):
 
-    def __init__(self, s_space, a_space):
+    def __init__(self, s_size, a_size):
         super(AC_netwok, self).__init__()
-        self.conv1 = nn.Conv2d(s_space, 32, 3, stride=2, padding=1)
+        self.conv1 = nn.Conv2d(s_size, 32, 3, stride=2, padding=1)
         self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
         self.conv3 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
         self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
 
         self.lstm = nn.LSTMCell(32 * 3 * 3, 256)
+        
+        # 1 output because it is the NN for the value V(s)
+        self.critic_linear = nn.Linear(256, 1)
+        # One Q value for each action
+        self.actor_linear = nn.Linear(256, a_size)
+
+        self.apply(weights_init)
+        self.actor_linear.weight.data = normalized_columns_initializer(self.actor_linear.weight.data, 0.01)
+        self.actor_linear.bias.data.fill_(0)
+
+        self.critic_linear.weight.data = normalized_columns_initializer(self.critic_linear.weight.data, 1)
+        self.critic_linear.bias.data.fill_(0)
+
+        self.lstm.bias_ih.data.fill_(0)
+        self.lstm.bias_hh.data.fill_(0)
+
+        self.train()
