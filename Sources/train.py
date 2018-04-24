@@ -59,7 +59,7 @@ def train(rank, params, shared_model, optimizer):
 
         R = torch.zeros(1,1)
         if not done:
-            value, _, _ = model((Variable(state.unsqueeze(0)), (hx, cx))))
+            value, _, _ = model((Variable(state.unsqueeze(0)), (hx, cx)))
             R = value.data
         values.append(Variable(R))
         policy_loss = 0
