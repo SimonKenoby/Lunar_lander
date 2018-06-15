@@ -22,6 +22,9 @@ class NStepProgress:
     def __iter__(self):
         state = self.env.reset()
         state = self.env.render(mode='rgb_array')
+        print(state.shape)
+        state = state.transpose((2,0,1))
+        print(state.shape)
         history = deque()
         reward = 0.0
         while True:

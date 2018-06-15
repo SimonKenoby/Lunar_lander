@@ -13,10 +13,10 @@ class CNN(nn.Module):
 
     def __init__(self, action_space_size):
         super(CNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size = 5, stride = 2)
+        self.conv1 = nn.Conv2d(3, 32, kernel_size = 5, stride = 2)
         self.conv2 = nn.Conv2d(in_channels = 32, out_channels = 32, kernel_size = 3)
         self.conv3 = nn.Conv2d(in_channels = 32, out_channels = 64, kernel_size = 2)
-        self.fc1 = nn.Linear(in_features = self.count_neurons((1, 80, 80)), out_features = 40)
+        self.fc1 = nn.Linear(in_features = self.count_neurons((3, 400, 600)), out_features = 40)
         self.fc2 = nn.Linear(in_features = 40, out_features = action_space_size)
 
     def count_neurons(self, image_dim):
