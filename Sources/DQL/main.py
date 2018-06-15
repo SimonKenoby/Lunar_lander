@@ -57,18 +57,18 @@ class AI:
         self.body = body
 
     def __call__(self, inputs):
-        input = Variable(torch.from_numpy(np.array(inputs, dtype = np.float32)))
+        input = Variable(torch.from_numpy(np.array(inputs, dtype = np.float32)).cuda())
         output = self.brain(input)
         actions = self.body(output)
-        return actions.data.numpy()
+        return actions.cpu().data.numpy()
 
 if __name__ == "__main__":
 
     env = gym.make('LunarLander-v2').unwrapped
     number_actions = env.action_space.n
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    cnn = CNN(number_actions)
-    softmax_body = SoftmaxBody(T = 1.0)
+    cnn = CNN(number_actions).to(device)
+    softmax_body = SoftmaxBody(T = 1.0).to(device)
     ai = AI(brain = cnn, body = softmax_body)
 
     # Setting up Experience Replay
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         inputs = []
         targets = []
         for series in batch:
-            input = Variable(torch.from_numpy(np.array([series[0].state, series[-1].state], dtype = np.float32)))
+            input = Variable(torch.from_numpy(np.array([series[0].state, series[-1].state], dtype = np.float32)).cuda())
             output = cnn(input)
             cumul_reward = 0.0 if series[-1].done else output[1].data.max()
             for step in reversed(series[:-1]):
@@ -91,7 +91,7 @@ if __name__ == "__main__":
             target[series[0].action] = cumul_reward
             inputs.append(state)
             targets.append(target)
-        return torch.from_numpy(np.array(inputs, dtype = np.float32)), torch.stack(targets)
+        return torch.from_numpy(np.array(inputs, dtype = np.float32)).cuda(), torch.stack(targets)
 
     # Making the moving average on 100 steps
     class MA:
