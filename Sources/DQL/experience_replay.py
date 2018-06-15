@@ -30,6 +30,8 @@ class NStepProgress:
         while True:
             action = self.ai(np.array([state]))[0][0]
             next_state, r, is_done, _ = self.env.step(action)
+            next_state = self.env.render(mode='rgb_array')
+            next_state = next_state.transpose((2,0,1))
             reward += r
             history.append(Step(state = state, action = action, reward = r, done = is_done))
             while len(history) > self.n_step + 1:
@@ -46,6 +48,8 @@ class NStepProgress:
                 self.rewards.append(reward)
                 reward = 0.0
                 state = self.env.reset()
+                state = self.env.render(mode='rgb_array')
+                state = state.transpose((2,0,1))
                 history.clear()
     
     def rewards_steps(self):

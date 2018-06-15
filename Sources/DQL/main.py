@@ -45,7 +45,7 @@ class SoftmaxBody(nn.Module):
 
     def forward(self, outputs):
         probs = F.softmax(outputs * self.T)   
-        actions = probs.multinomial()
+        actions = probs.multinomial(1)
         return actions
 
 # Making the AI
@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     env = gym.make('LunarLander-v2').unwrapped
     number_actions = env.action_space.n
-    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     cnn = CNN(number_actions)
     softmax_body = SoftmaxBody(T = 1.0)
     ai = AI(brain = cnn, body = softmax_body)
