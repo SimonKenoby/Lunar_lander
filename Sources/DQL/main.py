@@ -127,8 +127,3 @@ if __name__ == "__main__":
         ma.add(rewards_steps)
         avg_reward = ma.average()
         print("Epoch: %s, Average Reward: %s" % (str(epoch), str(avg_reward)))
-        if avg_reward >= 1500:
-            print("Congratulations, your AI wins")
-            break
-
-        
