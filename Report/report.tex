@@ -1,0 +1,31 @@
+\documentclass[14pt,a4paper,oneside]{report}
+
+\usepackage{pdfpages}
+\usepackage{epstopdf}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{subfig}
+
+
+\renewcommand{\thesection}{\arabic{section}}
+\setcounter{secnumdepth}{3}
+
+\title{\textbf{Optimal decision making for complex problems}
+\\ Lunar Lander}
+
+\author{Francois Delarbre \and Simon Lorent}
+
+
+\begin{document}
+
+\vfill
+\date{Academic year 2017 - 2018}
+
+\maketitle
+
+\section{Introduction}
+\paragraph{} In this project, we have chose to try to solve the lunar lander\footnote{\url{https://gym.openai.com/envs/LunarLander-v2/}} probleme from openAi gym. To do so, we have tryied two methods, the first one, by adapting code found\footnote{\url{https://www.superdatascience.com/artificial-intelligence/}} for an other problem, which use deep convolutional Q-learning. For the second one we tryied to implement A3C algorithm by ourself. 
+
+\section{Deep Convolutional Q-learning}
+\paragraph{} Deep convolutional Q-learning, as the name says, make use of a convolutional neural network, which take as an input images of the problem, and output the action to take. 
+\end{document}
