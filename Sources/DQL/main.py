@@ -129,9 +129,6 @@ if __name__ == "__main__":
         avg_reward = ma.average()
         r.append(avg_reward)
         print("Epoch: %s, Average Reward: %s" % (str(epoch), str(avg_reward)))
-        if avg_reward >= 1500:
-            print("Congratulations, your AI wins")
-            break
 
     plt.plot(range(1, nb_epochs+1),r )
     plt.title('Average reward for each epochs')
