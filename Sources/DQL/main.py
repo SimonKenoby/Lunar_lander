@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.autograd import Variable
+import matplotlib.pyplot as plt 
 
 import experience_replay, image_preprocessing
 
@@ -45,7 +46,7 @@ class SoftmaxBody(nn.Module):
 
     def forward(self, outputs):
         probs = F.softmax(outputs * self.T)   
-        actions = probs.multinomial(1)
+        actions = probs.multinomial(2)
         return actions
 
 # Making the AI
@@ -108,7 +109,7 @@ if __name__ == "__main__":
         def average(self):
             return np.mean(self.list_of_rewards)
     ma = MA(100)
-
+    r = []
     # Training the AI
     loss = nn.MSELoss()
     optimizer = optim.Adam(cnn.parameters(), lr = 0.001)
@@ -126,9 +127,14 @@ if __name__ == "__main__":
         rewards_steps = n_steps.rewards_steps()
         ma.add(rewards_steps)
         avg_reward = ma.average()
+        r.append(avg_reward)
         print("Epoch: %s, Average Reward: %s" % (str(epoch), str(avg_reward)))
         if avg_reward >= 1500:
             print("Congratulations, your AI wins")
             break
 
-        
+    plt.plot(range(1, nb_epochs+1),r )
+    plt.title('Average reward for each epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Reward on the last 100 actions')
+    plt.show()
